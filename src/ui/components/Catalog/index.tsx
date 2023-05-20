@@ -1,11 +1,18 @@
-import { useSelector } from 'react-redux'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
 import { useProducts } from '../../../data/hooks/useProducts'
+import { addProductToCart } from '../../../data/store/cart/actions'
+import { IProduct } from '../../../data/store/cart/interfaces/product.interface'
 
 export function Catalog() {
 
   const { products } = useProducts()
 
-  const state = useSelector(state => state)
+  const dispatch = useDispatch()
+
+  const handleAddProductToCart = useCallback((product: IProduct) => {
+    dispatch(addProductToCart(product))
+  }, [dispatch])
 
 
   return (
@@ -33,7 +40,12 @@ export function Catalog() {
             <span>{product.price}</span>
           </div>
 
-          <button type='button'>Comprar</button>
+          <button
+            type='button'
+            onClick={() => handleAddProductToCart(product)}
+          >
+            Comprar
+          </button>
         </article>
       ))}
     </main>
